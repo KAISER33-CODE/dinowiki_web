@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tienda Oficial DinoWiki - Merchandising, peluches y gestión comercial aplicada.">
+    <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <title>Tienda Oficial - DinoWiki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-green: #5a9e5a;
+            --dark-green: #3d5a3d;
+            --light-green: #7fb77f;
+            --bg-green: #e8f5e8;
+            --carnivore-red: #c94545;
+            --omnivore-gold: #d4a02d;
+            --shadow-main: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3a1b 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(127, 183, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 183, 127, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* BANNER Y NAVEGACIÓN (Idéntico al sitio original) */
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.98) 0%, rgba(90, 124, 90, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-main);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--light-green);
+        }
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            gap: 1rem;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .site-title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 0.75rem;
+            font-weight: 300;
+        }
+        .header-actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+        .cart-btn-header {
+            background: var(--omnivore-gold);
+            border: 2px solid #fff;
+            color: #1a2a1a;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .cart-btn-header:hover {
+            transform: scale(1.05);
+            background: #e6b23c;
+        }
+        .cart-badge {
+            background: var(--carnivore-red);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.75rem;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .hamburger span {
+            width: 22px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+        }
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0 1rem;
+        }
+        nav a {
+            color: var(--dark-green);
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+        }
+        nav a:hover, nav a.active {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(127, 183, 127, 0.4);
+        }
+        /* HERO */
+        .hero {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        /* CONTENEDOR PRINCIPAL Y SECCIONES */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.96);
+            margin-bottom: 2.5rem;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+        }
+        .section h2 {
+            text-align: center;
+            color: var(--dark-green);
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            margin-bottom: 1.5rem;
+            font-family: Georgia, serif;
+            border-bottom: 4px solid var(--light-green);
+            padding-bottom: 0.8rem;
+        }
+        /* CATÁLOGO DE PELUCHES (TIENDA) */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--bg-green);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(61, 90, 61, 0.25);
+            border-color: var(--light-green);
+        }
+        .product-img-box {
+            position: relative;
+            height: 230px;
+            background: #f4f9f4;
+            overflow: hidden;
+        }
+        .product-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .product-card:hover .product-img-box img {
+            transform: scale(1.08);
+        }
+        .product-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--primary-green);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .product-tag.promo {
+            background: var(--carnivore-red);
+        }
+        .product-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-title {
+            color: var(--dark-green);
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+        .product-desc {
+            color: #666;
+            font-size: 0.92rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        .product-specs {
+            font-size: 0.82rem;
+            color: #5a7c5a;
+            background: var(--bg-green);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--dark-green);
+        }
+        .product-price small {
+            display: block;
+            font-size: 0.72rem;
+            color: #888;
+            font-weight: normal;
+        }
+        .btn-buy {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-buy:hover {
+            background: var(--dark-green);
+            transform: scale(1.05);
+        }
+        /* SECCIÓN ACADÉMICA: INFORMÁTICA APLICADA A LA ADMINISTRACIÓN Y GESTIÓN */
+        .theory-intro {
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto 2rem;
+            color: #444;
+            font-size: 1.05rem;
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .admin-card {
+            background: linear-gradient(135deg, #f9fcf9, #eef7ee);
+            border-left: 5px solid var(--primary-green);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        .admin-card h3 {
+            color: var(--dark-green);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.2rem;
+        }
+        .admin-card p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+        /* ORGANIGRAMA / DIVISIÓN DE PODERES Y FUNCIONES EN LA EMPRESA */
+        .org-box {
+            background: #fff;
+            border: 2px solid var(--light-green);
+            border-radius: 18px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+        }
+        .org-title {
+            text-align: center;
+            color: var(--dark-green);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .org-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        .org-levels {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .org-level-card {
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .level-pol { background: #ffe6e6; border-left: 6px solid var(--carnivore-red); }
+        .level-adm { background: #fff9e6; border-left: 6px solid var(--omnivore-gold); }
+        .level-tec { background: var(--bg-green); border-left: 6px solid var(--primary-green); }
+        .level-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .role-card {
+            background: #f8fbf8;
+            border: 1px solid #d4e8d4;
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .role-card.highlight-role {
+            background: linear-gradient(135deg, #fff9e6, #fff3cc);
+            border: 2px solid var(--omnivore-gold);
+            box-shadow: 0 5px 15px rgba(212, 160, 45, 0.2);
+        }
+        .role-card:hover {
+            transform: translateY(-5px);
+        }
+        .role-card i {
+            font-size: 1.8rem;
+            color: var(--primary-green);
+            margin-bottom: 0.6rem;
+        }
+        .role-card.highlight-role i {
+            color: var(--omnivore-gold);
+        }
+        .role-card h4 {
+            color: var(--dark-green);
+            margin-bottom: 0.4rem;
+        }
+        .role-card p {
+            font-size: 0.85rem;
+            color: #555;
+        }
+        /* MODAL DEL CARRITO */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-main);
+            border-top: 6px solid var(--primary-green);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--bg-green);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .cart-items {
+            max-height: 260px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark-green);
+            text-align: right;
+            margin: 1rem 0;
+        }
+        .btn-checkout {
+            width: 100%;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-checkout:hover {
+            background: var(--dark-green);
+        }
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 3rem 1rem 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #7fb77f;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #7fb77f;
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+        .footer-section a {
+            color: #a8d5a8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .footer-section a:hover {
+            color: #7fb77f;
+            padding-left: 6px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(127, 183, 127, 0.3);
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-container {
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                padding: 0 1rem;
+            }
+            .nav-container.active {
+                max-height: 500px;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="banner">
+        <div class="banner-content">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="images/logofinal.png" alt="Logo de DinoWiki">
+                </a>
+                <div>
+                    <div class="site-title">DinoWiki</div>
+                    <div class="site-subtitle">Tu Enciclopedia Digital & Store</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="cart-btn-header" onclick="openCart()">
+                    <i class="fas fa-shopping-cart"></i> Carrito
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container" id="navMenu">
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+            <a href="galeria.html"><i class="fas fa-images"></i> Dinoinfo</a>
+            <a href="descubrimientos.html"><i class="fas fa-flask"></i> Descubrimientos</a>
+            <a href="periodos.html"><i class="fas fa-history"></i> Períodos</a>
+            <a href="quiz beta.html"><i class="fas fa-question-circle"></i> Quiz</a>
+            <a href="tienda.html" class="active"><i class="fas fa-store"></i> Tienda</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>🛍️ Tienda Oficial DinoWiki 🦖</h1>
+        <p>¡Lleva la prehistoria a tu casa! Colección oficial de peluches paleontológicos y merchandising educativo con envíos a toda Mendoza y el país.</p>
+    </div>
+
+    <main>
+        <!-- SECCIÓN 1: CATÁLOGO DE PELUCHES -->
+        <section class="section">
+            <h2>🧸 Peluches Oficiales — Colección Mesozoica</h2>
+            <p style="text-align: center; color: #555; max-width: 750px; margin: 0 auto;">
+                Productos diseñados bajo supervisión paleontológica. Precios expresados en Pesos Argentinos (ARS) con IVA incluido y cuotas sin interés mediante comercio electrónico.
+            </p>
+
+            <div class="store-grid">
+                <!-- Peluche 1 -->
+                <div class="product-card">
+                    <div class="product-img-box">
+                        <span class="product-tag promo">Más Vendido</span>
+                        <img src="https://images.unsplash.com/photo-1559715541-5daf8a0296d0?auto=format&fit=crop&w=600&q=80" alt="Peluche Tyrannosaurus Rex">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Peluche T-Rex "Rexy"</h3>
+                        <p class="product-desc">Suave peluche de felpa hipoalergénica con detalles bordados de dientes y garras. Ideal para fans de los terópodos.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-ruler-vertical"></i> Alto: 35 cm | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $18.500
+                                <small>3 cuotas s/interés de $6.166</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Peluche T-Rex Rexy', 18500)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peluche 2 -->
+                <div class="product-card">
+                    <div class="product-img-box">
+                        <span class="product-tag">Edición Educativa</span>
+                        <img src="https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=600&q=80" alt="Peluche Triceratops">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Peluche Triceratops</h3>
+                        <p class="product-desc">Con sus tres cuernos acolchados y gola protectora texturizada. Incluye etiqueta con ficha técnica del Cretácico.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-ruler-horizontal"></i> Largo: 40 cm | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $16.900
+                                <small>3 cuotas s/interés de $5.633</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Peluche Triceratops', 16900)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peluche 3 -->
+                <div class="product-card">
+                    <div class="product-img-box">
+                        <span class="product-tag">Nuevo Ingreso</span>
+                        <img src="https://images.unsplash.com/photo-1566140967404-b8b3932483f5?auto=format&fit=crop&w=600&q=80" alt="Peluche Brachiosaurus">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Peluche Brachiosaurus</h3>
+                        <p class="product-desc">El gigante gentil del Jurásico en versión abrazable de cuello largo y relleno de vellón siliconado premium.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-ruler-vertical"></i> Alto: 45 cm | <i class="fas fa-box"></i> Stock: Últimas unidades
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $21.000
+                                <small>3 cuotas s/interés de $7.000</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Peluche Brachiosaurus', 21000)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peluche 4 -->
+                <div class="product-card">
+                    <div class="product-img-box">
+                        <span class="product-tag promo">Edición Argentina</span>
+                        <img src="https://images.unsplash.com/photo-1516934024742-b461fba47600?auto=format&fit=crop&w=600&q=80" alt="Peluche Giganotosaurus">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Peluche Giganotosaurus</h3>
+                        <p class="product-desc">Homenaje al superdepredador descubierto en la Patagonia Argentina. Diseño exclusivo de DinoWiki Store.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-ruler-horizontal"></i> Largo: 38 cm | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $19.500
+                                <small>3 cuotas s/interés de $6.500</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Peluche Giganotosaurus', 19500)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: INFORMÁTICA APLICADA A LA ADMINISTRACIÓN Y GESTIÓN -->
+        <section class="section">
+            <h2>💼 Gestión Comercial, E-Commerce y Organización Empresarial</h2>
+            <p class="theory-intro">
+                Aplicando los contenidos de <strong>Informática Aplicada a la Administración y Gestión</strong>, DinoWiki integra la difusión científica con un modelo de negocio digital sostenible mediante el comercio electrónico (<em>E-Commerce</em>) y una clara división funcional del trabajo.
+            </p>
+
+            <!-- Pilares de venta de merchandising por internet -->
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h3><i class="fas fa-laptop-code"></i> Comercio Electrónico (B2C)</h3>
+                    <p>Venta directa del sitio web al consumidor final (<em>Business to Consumer</em>). El catálogo digital automatiza la exhibición de productos, el cálculo de subtotales y la gestión de pedidos las 24 horas sin necesidad de local físico.</p>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-tags"></i> Estrategia de Merchandising</h3>
+                    <p>El merchandising convierte la identidad de marca (<strong>DinoWiki</strong>) en productos tangibles (peluches educativos). Esto fideliza a la comunidad, posiciona la marca y genera ingresos propios para financiar el hosting y la investigación.</p>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-chart-line"></i> Gestión de Stock y Precios</h3>
+                    <p>Uso de sistemas informáticos para controlar el inventario disponible, calcular costos unitarios, márgenes de ganancia, impuestos (IVA) y ofrecer financiación digital mediante pasarelas de pago.</p>
+                </div>
+            </div>
+
+            <!-- DIVISIÓN DE PODERES Y DEPARTAMENTALIZACIÓN EN LA EMPRESA -->
+            <div class="org-box">
+                <h3 class="org-title">🏛️ División de Poderes y Niveles Jerárquicos en DinoWiki</h3>
+                <p class="org-subtitle">
+                    En la administración de empresas, la <strong>división del poder y de funciones</strong> evita la concentración de decisiones, mejora el control interno y especializa cada área de trabajo.
+                </p>
+
+                <div class="org-levels">
+                    <div class="org-level-card level-pol">
+                        <div class="level-icon">👑</div>
+                        <div>
+                            <strong>1. Nivel Político o Estratégico (Dirección General):</strong>
+                            <p style="font-size: 0.92rem; color: #444;">Define la visión, misión y objetivos a largo plazo de DinoWiki (ej. expandir la enciclopedia hacia una tienda online sustentable). Toma las decisiones globales.</p>
+                        </div>
+                    </div>
+
+                    <div class="org-level-card level-adm">
+                        <div class="level-icon">📊</div>
+                        <div>
+                            <strong>2. Nivel Administrativo o Táctico (Gerencias / Áreas):</strong>
+                            <p style="font-size: 0.92rem; color: #444;">Coordina recursos, presupuestos, campañas de marketing y políticas comerciales. Aquí actúa el <strong>Área Comercial y de Merchandising</strong> junto con Comunicación.</p>
+                        </div>
+                    </div>
+
+                    <div class="org-level-card level-tec">
+                        <div class="level-icon">⚙️</div>
+                        <div>
+                            <strong>3. Nivel Técnico u Operativo (Ejecución):</strong>
+                            <p style="font-size: 0.92rem; color: #444;">Ejecuta las tareas diarias: programación del código web, diseño gráfico, redacción de fichas paleontológicas y despacho de pedidos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EQUIPO DE 5 INTEGRANTES -->
+                <h4 style="text-align: center; color: var(--dark-green); margin-top: 2.2rem; font-size: 1.25rem;">
+                    👥 Departamentalización del Equipo de Trabajo (5 Roles)
+                </h4>
+                <div class="roles-grid">
+                    <div class="role-card">
+                        <i class="fas fa-code"></i>
+                        <h4>1. Programador Web</h4>
+                        <p><strong>Área Técnica:</strong> Desarrollo HTML/CSS/JS, carrito interactivo, seguridad informática y mantenimiento de servidores.</p>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-paint-brush"></i>
+                        <h4>2. Diseñador UI/UX</h4>
+                        <p><strong>Área de Diseño:</strong> Identidad visual, paletas de colores, experiencia de usuario y presentación estética del catálogo.</p>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-book"></i>
+                        <h4>3. Contenidista</h4>
+                        <p><strong>Área Editorial:</strong> Investigación paleontológica, redacción de artículos y validación científica de los productos.</p>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-hashtag"></i>
+                        <h4>4. Social Media</h4>
+                        <p><strong>Área Comunicación:</strong> Gestión de redes sociales, difusión de lanzamientos y tráfico hacia la tienda online.</p>
+                    </div>
+                    <div class="role-card highlight-role">
+                        <i class="fas fa-briefcase"></i>
+                        <h4>5. Negocios & Merchandising</h4>
+                        <p><strong>Área Comercial (Nuevo Puesto):</strong> Gestión de e-commerce, fijación de precios, proveedores de peluches, ventas por mercado e internet y control de ingresos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL DEL CARRITO DE COMPRAS -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: var(--dark-green);"><i class="fas fa-shopping-bag"></i> Tu Carrito DinoWiki</h3>
+                <span class="close-modal" onclick="closeCart()">&times;</span>
+            </div>
+            <div class="cart-items" id="cartItemsContainer">
+                <p style="text-align: center; color: #777; padding: 1rem;">Tu carrito está vacío.</p>
+            </div>
+            <div class="cart-total">
+                Total: $<span id="cartTotal">0</span> ARS
+            </div>
+            <button class="btn-checkout" onclick="checkout()">
+                <i class="fas fa-credit-card"></i> Simular Compra Online
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-book-open"></i> Sobre DinoWiki</h3>
+                <p>DinoWiki es tu enciclopedia digital dedicada al fascinante mundo de los dinosaurios y ahora también tu tienda oficial de merchandising educativo.</p>
+                <p style="margin-top: 1rem;"><strong>Fundada en 2025</strong></p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Enlaces Rápidos</h3>
+                <a href="index.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                <a href="galeria.html"><i class="fas fa-chevron-right"></i> Dinoinfo</a>
+                <a href="descubrimientos.html"><i class="fas fa-chevron-right"></i> Descubrimientos</a>
+                <a href="periodos.html"><i class="fas fa-chevron-right"></i> Períodos Geológicos</a>
+                <a href="quiz beta.html"><i class="fas fa-chevron-right"></i> Quiz</a>
+                <a href="tienda.html"><i class="fas fa-chevron-right"></i> Tienda Oficial</a>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contacto Comercial</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Mendoza, Argentina</p>
+                <p><i class="fas fa-envelope"></i> Dinowikioficial@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +54 9 2613 468800</p>
+                <p><i class="fas fa-truck"></i> Envíos a todo el país</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 DinoWiki. Todos los derechos reservados.</p>
+            <p>Proyecto Educativo — Informática Aplicada a la Administración y Gestión</p>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            alert(`✅ ¡Agregaste "${name}" al carrito de DinoWiki!`);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').textContent = cart.length;
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #777; padding: 1rem;">Tu carrito está vacío.</p>';
+                totalEl.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                    <div class="cart-item">
+                        <span><strong>${item.name}</strong></span>
+                        <span>$${item.price.toLocaleString('es-AR')} 
+                            <button onclick="removeItem(${index})" style="background:none; border:none; color:#c94545; cursor:pointer; margin-left:8px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </span>
+                    </div>
+                `;
+            }).join('');
+
+            totalEl.textContent = total.toLocaleString('es-AR');
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Agrega al menos un peluche antes de finalizar la compra.');
+                return;
+            }
+            alert('🎉 ¡Gracias por tu compra en DinoWiki Store!\n\nEl área de Negocios y Merchandising ha registrado tu pedido en el sistema de gestión.');
+            cart = [];
+            updateCartUI();
+            closeCart();
+        }
+    </script>
+</body>
+</html>
