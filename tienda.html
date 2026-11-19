@@ -224,10 +224,34 @@
             border-bottom: 4px solid var(--light-green);
             padding-bottom: 0.8rem;
         }
-        /* CATÁLOGO DE PELUCHES (TIENDA) */
+        /* FILTROS DE CATEGORÍA */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1.2rem;
+        }
+        .filter-btn {
+            background: var(--bg-green);
+            color: var(--dark-green);
+            border: 2px solid var(--light-green);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-green);
+            color: #fff;
+            border-color: var(--dark-green);
+        }
+        /* CATÁLOGO DE PRODUCTOS (TIENDA) */
         .store-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -247,9 +271,12 @@
             box-shadow: 0 12px 30px rgba(61, 90, 61, 0.25);
             border-color: var(--light-green);
         }
+        .product-card.hidden {
+            display: none;
+        }
         .product-img-box {
             position: relative;
-            height: 230px;
+            height: 220px;
             background: #f4f9f4;
             overflow: hidden;
         }
@@ -276,6 +303,10 @@
         .product-tag.promo {
             background: var(--carnivore-red);
         }
+        .product-tag.gold {
+            background: var(--omnivore-gold);
+            color: #1a2a1a;
+        }
         .product-body {
             padding: 1.5rem;
             display: flex;
@@ -284,21 +315,21 @@
         }
         .product-title {
             color: var(--dark-green);
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             margin-bottom: 0.4rem;
             font-weight: 700;
         }
         .product-desc {
             color: #666;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
             flex-grow: 1;
         }
         .product-specs {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #5a7c5a;
             background: var(--bg-green);
-            padding: 0.4rem 0.8rem;
+            padding: 0.45rem 0.75rem;
             border-radius: 8px;
             margin-bottom: 1rem;
         }
@@ -310,7 +341,7 @@
             padding-top: 1rem;
         }
         .product-price {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: bold;
             color: var(--dark-green);
         }
@@ -324,7 +355,7 @@
             background: linear-gradient(135deg, var(--light-green), var(--primary-green));
             color: white;
             border: none;
-            padding: 0.7rem 1.2rem;
+            padding: 0.65rem 1.15rem;
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
@@ -468,7 +499,7 @@
             padding: 2rem;
             border-radius: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 520px;
             box-shadow: var(--shadow-main);
             border-top: 6px solid var(--primary-green);
             animation: slideDown 0.3s ease;
@@ -617,20 +648,28 @@
 
     <div class="hero">
         <h1>🛍️ Tienda Oficial DinoWiki 🦖</h1>
-        <p>¡Lleva la prehistoria a tu casa! Colección oficial de peluches paleontológicos y merchandising educativo con envíos a toda Mendoza y el país.</p>
+        <p>¡Lleva la prehistoria a tu casa! Peluches paleontológicos, indumentaria, libros educativos y figuras de colección con envíos a toda Mendoza y el país.</p>
     </div>
 
     <main>
-        <!-- SECCIÓN 1: CATÁLOGO DE PELUCHES -->
+        <!-- SECCIÓN 1: CATÁLOGO DE PRODUCTOS (8 ARTÍCULOS) -->
         <section class="section">
-            <h2>🧸 Peluches Oficiales — Colección Mesozoica</h2>
-            <p style="text-align: center; color: #555; max-width: 750px; margin: 0 auto;">
+            <h2>🛒 Catálogo Oficial — Merchandising & Colección Mesozoica</h2>
+            <p style="text-align: center; color: #555; max-width: 780px; margin: 0 auto;">
                 Productos diseñados bajo supervisión paleontológica. Precios expresados en Pesos Argentinos (ARS) con IVA incluido y cuotas sin interés mediante comercio electrónico.
             </p>
 
-            <div class="store-grid">
-                <!-- Peluche 1 -->
-                <div class="product-card">
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterProducts('all', this)">Todos (8)</button>
+                <button class="filter-btn" onclick="filterProducts('peluches', this)">🧸 Peluches</button>
+                <button class="filter-btn" onclick="filterProducts('indumentaria', this)">👕 Indumentaria</button>
+                <button class="filter-btn" onclick="filterProducts('libros', this)">📚 Libros y Guías</button>
+                <button class="filter-btn" onclick="filterProducts('accesorios', this)">🎒 Accesorios y Figuras</button>
+            </div>
+
+            <div class="store-grid" id="storeGrid">
+                <!-- 1. Peluche T-Rex -->
+                <div class="product-card" data-category="peluches">
                     <div class="product-img-box">
                         <span class="product-tag promo">Más Vendido</span>
                         <img src="https://m.media-amazon.com/images/I/51RkTYA28YL._UF894,1000_QL80_.jpg" alt="Peluche Tyrannosaurus Rex">
@@ -653,8 +692,8 @@
                     </div>
                 </div>
 
-                <!-- Peluche 2 -->
-                <div class="product-card">
+                <!-- 2. Peluche Triceratops -->
+                <div class="product-card" data-category="peluches">
                     <div class="product-img-box">
                         <span class="product-tag">Edición Educativa</span>
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWVvB3yVeXqgXMfMcb7DhQJjGmG6ijyc-iklhiZKw1A9qKSZFpAr5KqZM&s=10" alt="Peluche Triceratops">
@@ -677,8 +716,8 @@
                     </div>
                 </div>
 
-                <!-- Peluche 3 -->
-                <div class="product-card">
+                <!-- 3. Peluche Brachiosaurus -->
+                <div class="product-card" data-category="peluches">
                     <div class="product-img-box">
                         <span class="product-tag">Nuevo Ingreso</span>
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrzBhGNtNc9SFta04DBj20arZLeTyPAC8SQ5NSrpDrFH0Ihb3CAMmRSOY&s=10" alt="Peluche Brachiosaurus">
@@ -701,8 +740,8 @@
                     </div>
                 </div>
 
-                <!-- Peluche 4 -->
-                <div class="product-card">
+                <!-- 4. Peluche Giganotosaurus -->
+                <div class="product-card" data-category="peluches">
                     <div class="product-img-box">
                         <span class="product-tag promo">Edición Argentina</span>
                         <img src="https://http2.mlstatic.com/D_NQ_NP_904749-MLU70777694644_082023-O.webp" alt="Peluche Giganotosaurus">
@@ -719,6 +758,102 @@
                                 <small>3 cuotas s/interés de $6.500</small>
                             </div>
                             <button class="btn-buy" onclick="addToCart('Peluche Giganotosaurus', 19500)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Remera Oficial DinoWiki -->
+                <div class="product-card" data-category="indumentaria">
+                    <div class="product-img-box">
+                        <span class="product-tag gold">Merchandising</span>
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80" alt="Remera Oficial DinoWiki">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Remera Oficial DinoWiki</h3>
+                        <p class="product-desc">Algodón peinado 100% con estampado serigráfico de alta durabilidad y logo de la enciclopedia.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-tshirt"></i> Talles: S al XXL | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $15.200
+                                <small>3 cuotas s/interés de $5.066</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Remera Oficial DinoWiki', 15200)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Buzo Paleontólogo -->
+                <div class="product-card" data-category="indumentaria">
+                    <div class="product-img-box">
+                        <span class="product-tag">Abrigo</span>
+                        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80" alt="Buzo Canguro Paleontólogo">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Buzo Canguro "Expedición"</h3>
+                        <p class="product-desc">Frisa invisible súper abrigada para salidas de campo o días frescos en Mendoza, con capucha y bolsillo.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-tshirt"></i> Talles: S al XL | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $28.900
+                                <small>3 cuotas s/interés de $9.633</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Buzo Canguro Expedición', 28900)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Guía Ilustrada del Mesozoico -->
+                <div class="product-card" data-category="libros">
+                    <div class="product-img-box">
+                        <span class="product-tag gold">Educativo</span>
+                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80" alt="Guía Ilustrada del Mesozoico">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Guía Ilustrada del Mesozoico</h3>
+                        <p class="product-desc">Compendio impreso con mapas geológicos, períodos Triásico, Jurásico y Cretácico y fichas de especies.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-book-open"></i> 128 páginas | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $14.000
+                                <small>3 cuotas s/interés de $4.666</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Guía Ilustrada del Mesozoico', 14000)">
+                                <i class="fas fa-cart-plus"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Kit Fósil y Mochila DinoWiki -->
+                <div class="product-card" data-category="accesorios">
+                    <div class="product-img-box">
+                        <span class="product-tag promo">Combo Escolar</span>
+                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80" alt="Mochila y Kit Explorador DinoWiki">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-title">Mochila + Réplica de Amonite</h3>
+                        <p class="product-desc">Mochila reforzada con compartimento para notebook y réplica educativa de fósil amonite para colección.</p>
+                        <div class="product-specs">
+                            <i class="fas fa-backpack"></i> 25 Litros | <i class="fas fa-box"></i> Stock: Disponible
+                        </div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                $26.500
+                                <small>3 cuotas s/interés de $8.833</small>
+                            </div>
+                            <button class="btn-buy" onclick="addToCart('Mochila + Réplica de Amonite', 26500)">
                                 <i class="fas fa-cart-plus"></i> Comprar
                             </button>
                         </div>
@@ -742,7 +877,7 @@
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-tags"></i> Estrategia de Merchandising</h3>
-                    <p>El merchandising convierte la identidad de marca (<strong>DinoWiki</strong>) en productos tangibles (peluches educativos). Esto fideliza a la comunidad, posiciona la marca y genera ingresos propios para financiar el hosting y la investigación.</p>
+                    <p>El merchandising convierte la identidad de marca (<strong>DinoWiki</strong>) en productos tangibles (peluches, indumentaria y guías educativas). Esto fideliza a la comunidad, posiciona la marca y genera ingresos propios para financiar el hosting y la investigación.</p>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-chart-line"></i> Gestión de Stock y Precios</h3>
@@ -811,7 +946,7 @@
                     <div class="role-card highlight-role">
                         <i class="fas fa-briefcase"></i>
                         <h4>5. Negocios & Merchandising</h4>
-                        <p><strong>Área Comercial (Nuevo Puesto):</strong> Gestión de e-commerce, fijación de precios, proveedores de peluches, ventas por mercado e internet y control de ingresos.</p>
+                        <p><strong>Área Comercial (Nuevo Puesto):</strong> Gestión de e-commerce, fijación de precios, proveedores de peluches y merchandising, ventas por internet y control de ingresos.</p>
                     </div>
                 </div>
             </div>
@@ -874,6 +1009,19 @@
             document.getElementById('navMenu').classList.toggle('active');
         }
 
+        function filterProducts(category, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('#storeGrid .product-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
         function addToCart(name, price) {
             cart.push({ name, price });
             updateCartUI();
@@ -924,10 +1072,11 @@
 
         function checkout() {
             if (cart.length === 0) {
-                alert('Agrega al menos un peluche antes de finalizar la compra.');
+                alert('Agrega al menos un producto antes de finalizar la compra.');
                 return;
             }
-            alert('🎉 ¡Gracias por tu compra en DinoWiki Store!\n\nEl área de Negocios y Merchandising ha registrado tu pedido en el sistema de gestión.');
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            alert(`🎉 ¡Gracias por tu compra en DinoWiki Store!\n\nTotal abonado: $${total.toLocaleString('es-AR')} ARS\nEl Área de Negocios y Merchandising ha registrado el comprobante en el sistema.`);
             cart = [];
             updateCartUI();
             closeCart();
